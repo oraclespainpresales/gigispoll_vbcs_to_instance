@@ -1,0 +1,33 @@
+[
+    {
+        "dateTimeOrderTaken": "2019-07-22T14:05:27.896Z",
+        "takenByEmployee": "emp001",
+        "customer": {
+            "customerId": {
+                "telephone": "657765412",
+                "email": "ivan.smith@myemail.es"
+            }
+        },
+        "pizzaOrdered": {
+            "baseType": "Small ULTIMATE CHEESE LOVER",
+            "topping1": "Mushrooms",
+            "topping2": "Onions",
+            "topping3": "Tomatoes"
+        },
+        "totalPrice": "10$",
+        "customerAdress": {
+            "street": {
+                "name": "GPS coord. provided",
+                "long": "-3.692906",
+                "lat": "40.450204"
+            },
+            "number": "s/n",
+            "door": "",
+            "email": "joe.smith@myemail.es",
+            "cityCode": "28013",
+            "city": "Madrid"
+        },
+        "orderId": "20190722140528",
+        "status": "PIZZA PAID"
+    }
+]

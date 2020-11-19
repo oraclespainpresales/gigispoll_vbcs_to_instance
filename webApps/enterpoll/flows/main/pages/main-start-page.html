@@ -1,0 +1,44 @@
+<div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center" style="width:100%">
+  <div class="oj-flex oj-flex-item oj-sm-flex-initial" style="width:100%;height:10px">
+    <oj-progress value="{{ $variables.running ? -1 : 0 }}" class="oj-flex-item oj-sm-flex-initial" style="width:100%"></oj-progress>
+  </div>
+  <div class="oj-flex-item oj-sm-flex-initial">
+    <oj-bind-if test='[[ $variables.errorMessage != "" ]]'>
+      <div class="oj-sm-flex-direction-column oj-sm-align-items-center oj-flex">
+        <h3 class="oj-flex-item oj-sm-flex-initial">
+          <oj-bind-text value="[[ $variables.errorMessage ]]"></oj-bind-text>
+        </h3>
+      </div>
+    </oj-bind-if>
+  </div>
+  <div class="oj-flex-item oj-sm-flex-initial" style="width:100%">
+    <oj-bind-if test="[[ $variables.ready ]]">
+      <div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center" style="width:100%">
+        <div class="oj-flex oj-sm-justify-content-center oj-sm-flex-direction-column oj-flex-item oj-sm-flex-initial oj-flex-items-pad" style="width:100%;border: 2px solid black">
+          <h4 class="oj-flex-item oj-sm-flex-initial oj-sm-align-self-center">Your order</h4>
+          <oj-form-layout label-edge="top" class="oj-flex-item oj-sm-align-self-flex-start" style="width:100%">
+            <oj-input-text label-hint="Pizza" readonly="true" value="{{ $page.variables.pizza }}" class=""></oj-input-text>
+            <oj-input-text label-hint="Toppings" readonly="true" value="{{ $variables.toppings }}"></oj-input-text>
+          </oj-form-layout>
+        </div>
+        <h5 class="oj-sm-align-self-center oj-flex-item oj-sm-flex-initial">How did we do?</h5>
+        <oj-rating-gauge value="{{ $page.variables.rate }}" style="max-width:100%;" changed-state.color="green" hover-state.color="green" selected-state.color="green" class="oj-flex-item oj-sm-flex-initial" transient-value="{{ $variables.rate }}"></oj-rating-gauge>
+        <div style="height:20px" class="oj-flex-item oj-sm-flex-initial"></div>
+        <div class="oj-flex-item oj-sm-flex-initial">
+          <img :src="[[ $application.path + 'resources/images/' + $variables.rate + '.png' ]]" height="90">
+        </div>
+        <div style="height:20px" class="oj-flex-item oj-sm-flex-initial"></div>
+        <div class="oj-flex oj-flex-item oj-sm-flex-initial" style="width:100%">
+          <div class="oj-flex-item oj-sm-flex-initial" style="width:100%">
+            <oj-form-layout label-edge="top" style="width:100%">
+              <oj-text-area label-hint='[[ "Comments" + (($variables.rate >= 3) ? " (optional)" : "") ]]' placeholder='[[ (($variables.rate >= 3) ? "Enter additional comments" : "We did it so bad?, please let us know how we can improve!") ]]' rows="3" class="oj-form-control-full-width" required="[[ $variables.rate <= 2 ]]" value="{{ $page.variables.comments }}" raw-value="{{ $variables.rawComments }}"></oj-text-area>
+            </oj-form-layout>
+          </div>
+        </div>
+        <div class="oj-flex-item oj-sm-flex-initial">
+          <oj-button on-oj-action="[[$listeners.ojButtonOjAction]]" chroming="solid" disabled="[[ !(($variables.rate > 2) ||($variables.rate <= 2 && $variables.rawComments !== undefined && $variables.rawComments.length > 0)) ]]">Submit</oj-button>
+        </div>
+      </div>
+    </oj-bind-if>
+  </div>
+</div>

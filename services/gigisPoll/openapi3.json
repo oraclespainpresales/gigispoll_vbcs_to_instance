@@ -1,0 +1,291 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Gigis Poll",
+        "version": "1.0.0",
+        "x-vb": {}
+    },
+    "servers": [
+        {
+            "url": "https://fzskntbkilzlpa4dgbyiqbktpm.apigateway.eu-frankfurt-1.oci.customer-oci.com/gigis/poll",
+            "description": "Gigis Poll",
+            "x-vb": {
+            }
+        }
+    ],
+    "paths": {
+        "/verifyuuid": {
+            "post": {
+                "operationId": "verifyuuid",
+                "responses": {
+                    "default": {
+                        "description": "Response for default",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostVerifyuuidResponse"
+                                },
+                                "examples": {
+                                    "vb": {
+                                        "summary": "Example stored by VB User",
+                                        "externalValue": "./examples/verifyuuid/response_default_application_json_vb.json"
+                                    }
+                                }
+                            }
+                        }
+                    }
+               },
+                "x-vb": {
+                    "actionHint": "getOne"
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostVerifyuuidRequest"
+                            },
+                            "examples": {
+                                "vb": {
+                                    "externalValue": "./examples/verifyUUID/request_application_json_vb.json"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getorder": {
+            "post": {
+                "operationId": "getorder",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostGetorderRequest"
+                            },
+                            "examples": {
+                                "vb": {
+                                    "externalValue": "./examples/getorder/request_application_json_vb.json"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "Response for default",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostGetorderResponse"
+                                },
+                                "examples": {
+                                    "vb": {
+                                        "summary": "Example stored by VB User",
+                                        "externalValue": "./examples/getorder/response_default_application_json_vb.json"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-vb": {
+                    "actionHint": "getMany"
+                }
+            }
+        },
+        "/submitpoll": {
+            "post": {
+                "operationId": "submitpoll",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostSubmitpollRequest"
+                            },
+                            "examples": {
+                                "vb": {
+                                    "summary": "Example stored by VB User",
+                                    "externalValue": "./examples/submitpoll/request_application_json_vb.json"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "Response for default",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostSubmitpollResponse"
+                                },
+                                "examples": {
+                                    "vb": {
+                                        "summary": "Example stored by VB User",
+                                        "externalValue": "./examples/submitpoll/response_default_application_json_vb.json"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-vb": {
+                    "actionHint": "update"
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PostVerifyuuidRequest": {
+                "type": "object",
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PostVerifyuuidResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "orderid": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "expirationdate": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PostGetorderRequest": {
+                "type": "object",
+                "properties": {
+                    "orderid": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PostGetorderResponse": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "dateTimeOrderTaken": {
+                            "type": "string"
+                        },
+                        "takenByEmployee": {
+                            "type": "string"
+                        },
+                        "customer": {
+                            "type": "object",
+                            "properties": {
+                                "customerId": {
+                                    "type": "object",
+                                    "properties": {
+                                        "telephone": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "pizzaOrdered": {
+                            "type": "object",
+                            "properties": {
+                                "baseType": {
+                                    "type": "string"
+                                },
+                                "topping1": {
+                                    "type": "string"
+                                },
+                                "topping2": {
+                                    "type": "string"
+                                },
+                                "topping3": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "totalPrice": {
+                            "type": "string"
+                        },
+                        "customerAdress": {
+                            "type": "object",
+                            "properties": {
+                                "street": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "long": {
+                                            "type": "string"
+                                        },
+                                        "lat": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "number": {
+                                    "type": "string"
+                                },
+                                "door": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "cityCode": {
+                                    "type": "string"
+                                },
+                                "city": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "orderId": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "PostSubmitpollRequest": {
+                "type": "object",
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "orderid": {
+                        "type": "string"
+                    },
+                    "rate": {
+                        "type": "integer"
+                    },
+                    "comments": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PostSubmitpollResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}

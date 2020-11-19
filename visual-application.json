@@ -1,0 +1,11 @@
+{
+    "vbcs.dt.version": "20200707-21.01.0:20200722-bufp_41222::20200921-bufp_41649",
+    "source.version": "19.4.3",
+    "dependencies": {
+        "upgrade": "micro",
+        "paths": {
+            "jet": "https://static.oracle.com/cdn/jet/v8.1.5",
+            "visualRuntime": "https://static.oracle.com/cdn/vb/19.4.3.19"
+        }
+    }
+}

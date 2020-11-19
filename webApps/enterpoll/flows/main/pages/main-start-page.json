@@ -1,0 +1,345 @@
+{
+  "pageModelVersion": "19.4.3",
+  "title": "",
+  "description": "",
+  "variables": {
+    "rate": {
+      "type": "number",
+      "defaultValue": 0
+    },
+    "pizza": {
+      "type": "string"
+    },
+    "running": {
+      "type": "boolean",
+      "defaultValue": false
+    },
+    "errorMessage": {
+      "type": "string"
+    },
+    "uuid": {
+      "type": "string",
+      "input": "fromUrl"
+    },
+    "ready": {
+      "type": "boolean",
+      "defaultValue": false
+    },
+    "toppings": {
+      "type": "string"
+    },
+    "comments": {
+      "type": "string"
+    },
+    "orderid": {
+      "type": "string"
+    },
+    "rawComments": {
+      "type": "string"
+    }
+  },
+  "metadata": {},
+  "types": {},
+  "chains": {
+    "loadData": {
+      "root": "assignVariables3",
+      "description": "",
+      "variables": {},
+      "actions": {
+        "if1": {
+          "module": "vb/action/builtin/ifAction",
+          "parameters": {
+            "condition": "[[ $chain.results.verifyUUID.body.code != 0 ]]"
+          },
+          "outcomes": {
+            "true": "assignVariables1",
+            "false": "assignVariables2"
+          },
+          "label": "Invalid UUID?"
+        },
+        "verifyUUID": {
+          "module": "vb/action/builtin/restAction",
+          "parameters": {
+            "endpoint": "gigisPoll/verifyuuid",
+            "body": "{{ {\n  \"uuid\": $page.variables.uuid\n} }}"
+          },
+          "outcomes": {
+            "failure": "assignVariables5",
+            "success": "if1"
+          },
+          "label": "Verify UUID"
+        },
+        "assignVariables1": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.errorMessage": {
+              "source": "{{ $chain.results.verifyUUID.body.message }}"
+            },
+            "$page.variables.ready": {
+              "source": "false"
+            }
+          },
+          "outcomes": {
+            "success": "assignVariables4"
+          }
+        },
+        "assignVariables3": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.running": {
+              "source": true
+            },
+            "$page.variables.errorMessage": {
+              "source": "Verifying your poll token..."
+            }
+          },
+          "outcomes": {
+            "success": "verifyUUID"
+          }
+        },
+        "assignVariables4": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.running": {
+              "source": false
+            }
+          }
+        },
+        "assignVariables5": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.errorMessage": {
+              "source": "Ooops, something wrong happened. Please refresh the page"
+            },
+            "$page.variables.ready": {
+              "source": "false"
+            }
+          },
+          "outcomes": {
+            "success": "assignVariables4"
+          }
+        },
+        "getOrder": {
+          "module": "vb/action/builtin/restAction",
+          "parameters": {
+            "endpoint": "gigisPoll/getorder",
+            "body": "{{ {\n  orderid: $chain.results.verifyUUID.body.orderid\n} }}"
+          },
+          "outcomes": {
+            "failure": "assignVariables7",
+            "success": "if2"
+          },
+          "label": "Get Order"
+        },
+        "assignVariables6": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.errorMessage": {
+              "source": "Ooops, something wrong happened. Original Order not found"
+            },
+            "$page.variables.ready": {
+              "source": false
+            }
+          },
+          "outcomes": {
+            "success": "assignVariables4"
+          }
+        },
+        "assignVariables7": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.errorMessage": {
+              "source": "Ooops, something wrong happened. Please refresh the page"
+            },
+            "$page.variables.ready": {
+              "source": "false"
+            }
+          },
+          "outcomes": {
+            "success": "assignVariables4"
+          }
+        },
+        "if2": {
+          "module": "vb/action/builtin/ifAction",
+          "label": "Order Exists?",
+          "outcomes": {
+            "true": "assignVariables8",
+            "false": "assignVariables6"
+          },
+          "parameters": {
+            "condition": "[[ $chain.results.getOrder.body.length > 0 ]]"
+          }
+        },
+        "assignVariables8": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.pizza": {
+              "source": "{{ $chain.results.getOrder.body[0].pizzaOrdered.baseType }}"
+            },
+            "$page.variables.toppings": {
+              "source": "{{ (($chain.results.getOrder.body[0].pizzaOrdered.topping1 != \"no extra toppings\") ? $chain.results.getOrder.body[0].pizzaOrdered.topping1 : \"\") + \n(($chain.results.getOrder.body[0].pizzaOrdered.topping2 != \"no extra toppings\") ? \", \" + $chain.results.getOrder.body[0].pizzaOrdered.topping2 : \"\") + \n(($chain.results.getOrder.body[0].pizzaOrdered.topping3 != \"no extra toppings\") ? \", \" + $chain.results.getOrder.body[0].pizzaOrdered.topping3 : \"\") }}"
+            },
+            "$page.variables.ready": {
+              "source": true
+            },
+            "$page.variables.orderid": {
+              "source": "{{ $chain.results.getOrder.body[0].orderId }}"
+            },
+            "$page.variables.errorMessage": {
+              "reset": "empty"
+            }
+          },
+          "outcomes": {
+            "success": "assignVariables4"
+          }
+        },
+        "assignVariables2": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.errorMessage": {
+              "source": "Loading your Pizza Order details..."
+            }
+          },
+          "outcomes": {
+            "success": "getOrder"
+          }
+        }
+      }
+    },
+    "SubmitPoll": {
+      "description": "",
+      "variables": {
+        "detail": {
+          "required": true,
+          "type": "any",
+          "input": "fromCaller"
+        }
+      },
+      "root": "assignVariables2",
+      "actions": {
+        "assignVariables1": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.running": {
+              "source": false
+            }
+          }
+        },
+        "assignVariables2": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.running": {
+              "source": true
+            },
+            "$page.variables.ready": {
+              "source": false
+            },
+            "$page.variables.errorMessage": {
+              "source": "Submitting your evaluation..."
+            }
+          },
+          "outcomes": {
+            "success": "submitPoll"
+          }
+        },
+        "assignVariables4": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.errorMessage": {
+              "source": "Ooops, an error has occured. Please, refresh and try again"
+            }
+          },
+          "outcomes": {
+            "success": "assignVariables1"
+          }
+        },
+        "if1": {
+          "module": "vb/action/builtin/ifAction",
+          "outcomes": {
+            "true": "assignVariables5",
+            "false": "assignVariables6"
+          },
+          "parameters": {
+            "condition": "[[ $chain.results.submitPoll.body.code == 0 ]]"
+          }
+        },
+        "assignVariables5": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.errorMessage": {
+              "source": "Thank you!"
+            }
+          },
+          "outcomes": {
+            "success": "assignVariables1"
+          }
+        },
+        "assignVariables6": {
+          "module": "vb/action/builtin/assignVariablesAction",
+          "parameters": {
+            "$page.variables.errorMessage": {
+              "source": "{{ \"Ooops, something went wrong. Please refresh and try again: \" + JSON.stringify($chain.results.submitPoll.body) }}"
+            }
+          },
+          "outcomes": {
+            "success": "assignVariables1"
+          }
+        },
+        "submitPoll": {
+          "module": "vb/action/builtin/restAction",
+          "parameters": {
+            "endpoint": "gigisPoll/submitpoll",
+            "body": "{{ {\n  uuid: $page.variables.uuid,\n  orderid: $page.variables.orderid,\n  rate: $page.variables.rate,\n  comments: $page.variables.comments\n} }}"
+          },
+          "outcomes": {
+            "failure": "assignVariables4",
+            "success": "if1"
+          },
+          "label": "Submit Poll"
+        }
+      }
+    }
+  },
+  "eventListeners": {
+    "vbEnter": {
+      "chains": [
+        {
+          "chainId": "loadData",
+          "parameters": {}
+        }
+      ]
+    },
+    "ojButtonOjAction": {
+      "chains": [
+        {
+          "chainId": "SubmitPoll",
+          "parameters": {
+            "detail": "{{ $event.detail }}"
+          }
+        }
+      ]
+    }
+  },
+  "imports": {
+    "components": {
+      "oj-rating-gauge": {
+        "path": "ojs/ojgauge"
+      },
+      "oj-form-layout": {
+        "path": "ojs/ojformlayout"
+      },
+      "oj-text-area": {
+        "path": "ojs/ojinputtext"
+      },
+      "oj-button": {
+        "path": "ojs/ojbutton"
+      },
+      "oj-input-text": {
+        "path": "ojs/ojinputtext"
+      },
+      "oj-progress": {
+        "path": "ojs/ojprogress"
+      }
+    }
+  }
+}

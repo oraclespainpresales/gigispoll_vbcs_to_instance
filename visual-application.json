@@ -7,5 +7,7 @@
             "jet": "https://static.oracle.com/cdn/jet/v8.1.5",
             "visualRuntime": "https://static.oracle.com/cdn/vb/19.4.3.19"
         }
-    }
+    },
+    "rootURL": "gigispoll_vbcs",
+    "version": "0.1"
 }

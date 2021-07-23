@@ -1,5 +1,5 @@
 {
-  "applicationModelVersion": "19.4.3",
+
   "id": "enterpoll",
   "description": "A new VB app",
   "defaultPage": "shell",
@@ -30,9 +30,6 @@
     }
   },
   "services": {
-    "gigisPoll": {
-      "path": "./services/gigisPoll/openapi3.json"
-    }
   },
   "translations": {
     "app": {
